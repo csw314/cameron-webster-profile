@@ -1,5 +1,5 @@
-import { projects } from "../../data/projects.js?v=20261114-slideshow-2";
-import { initPortraitCarousel } from "./portrait-carousel.js?v=20261114-slideshow-2";
+import { projects } from "../../data/projects.js?v=20261114-profile-3";
+import { initPortraitCarousel } from "./portrait-carousel.js?v=20261114-profile-3";
 
 const year = document.querySelector("#year");
 if (year) year.textContent = new Date().getFullYear();

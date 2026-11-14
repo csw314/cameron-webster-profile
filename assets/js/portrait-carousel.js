@@ -1,4 +1,4 @@
-import { portraits, portraitIntervalMs } from "../../data/profile.js?v=20261114-slideshow-2";
+import { portraits, portraitIntervalMs } from "../../data/profile.js?v=20261114-profile-3";
 
 export function initPortraitCarousel() {
   const carousel = document.querySelector("#portrait-carousel");

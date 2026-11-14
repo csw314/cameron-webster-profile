@@ -16,6 +16,7 @@ The included model is trained and evaluated. Its public prediction service is co
 | --- | --- |
 | Profile | `index.html`, `assets/css/`, `assets/js/` |
 | Drawing interface | `projects/mnist/` |
+| CNN diagram and layer specifications | `projects/mnist/index.html`, `projects/mnist/architecture.css` |
 | Frontend service URL | `projects/mnist/config.js` |
 | Runnable training notebook | `training/train.ipynb` |
 | Reproducible training script | `training/train.py` |
@@ -75,6 +76,8 @@ GitHub Pages can deploy the repository root from `main`; `.nojekyll` is included
 Deploy the API separately to Render using the commands in `api/README.md` or the schema-validated root Blueprint. Verify health and actual inference before adding the exact service URL to `projects/mnist/config.js`. Then mark the MNIST entry live in `data/projects.js` and update its static fallback card and the roadmap introduction in `index.html`. The live data dashboard remains planned.
 
 Render's free service can sleep while idle. The demo handles delayed or failed requests explicitly; an always-on compute plan can be selected later if desired.
+
+Keep the CNN diagram, layer specifications, and decision thresholds on the MNIST page in sync with `api/mnist/network.py` and `api/artifacts/metadata.json` when retraining or replacing the model.
 
 ## Maintain the profile
 

@@ -6,21 +6,91 @@
   <title>Handwritten Digit Lab | Cameron Webster</title>
   <meta name="description" content="Draw a single digit and test a trained convolutional neural network. A live machine learning demo by Cameron Webster.">
   <meta property="og:title" content="Handwritten Digit Lab | Cameron Webster">
-  <meta property="og:description" content="One digit. One prediction. An interactive CNN demo with a sense of humor.">
+  <meta property="og:description" content="An All-Time Classic ML Problem. An interactive CNN demo with a sense of humor.">
   <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../../assets/css/styles.css"><link rel="stylesheet" href="demo.css">
-  <script type="module" src="demo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20261114-profile-3"><link rel="stylesheet" href="demo.css?v=20261114-profile-3">
+  <link rel="stylesheet" href="architecture.css?v=20261114-profile-3">
+  <script type="module" src="demo.js?v=20261114-profile-3"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header"><div class="container header-inner"><a class="brand" href="../../" aria-label="Cameron Webster, home"><span class="brand-mark" aria-hidden="true">c<span class="brand-slash">/</span>w</span><span class="brand-name">Cameron Webster</span></a><a class="back-link" href="../../#projects">← Back to portfolio</a><a class="header-contact" href="https://github.com/csw314/cameron-webster-profile/tree/main/training" target="_blank" rel="noopener noreferrer">View the code <svg class="icon-arrow" aria-hidden="true" viewBox="0 0 16 16"><path d="M3 13 13 3M3 3h10v10"/></svg><span class="sr-only"> (opens in a new tab)</span></a></div></header>
   <main class="container lab-main" id="main">
-    <section class="lab-intro" aria-labelledby="lab-title"><div><p class="eyebrow"><span class="square" aria-hidden="true"></span> Interactive project / Computer vision</p><h1 id="lab-title">One digit.<br><span class="muted">One prediction.</span></h1></div><div class="intro-copy"><p>Draw a single number from <strong>0 to 9</strong>. A trained neural network will take a guess.</p><p>Letters, doodles, and ambitious multi-digit numbers may receive a less mathematical response.</p></div></section>
+    <section class="lab-intro" aria-labelledby="lab-title"><div><p class="eyebrow"><span class="square" aria-hidden="true"></span> Interactive project / Computer vision</p><h1 id="lab-title">An All-Time Classic<br><span class="muted">ML Problem</span></h1></div><div class="intro-copy"><p>Draw a single number from <strong>0 to 9</strong>. A trained neural network will take a guess.</p><p>Letters, doodles, and ambitious multi-digit numbers may receive a less mathematical response.</p></div></section>
     <section class="lab-grid" aria-label="Digit recognition experiment">
       <div class="drawing-panel"><div class="panel-heading"><span>01 / Your input</span><span>Draw below</span></div><div class="drawing-area"><canvas id="drawing" width="320" height="320" aria-label="Drawing box. Use your mouse, finger, or stylus to draw one digit from zero to nine." aria-describedby="drawing-help">Use the example buttons below if your browser does not support canvas.</canvas><span class="canvas-hint" id="canvas-hint" aria-hidden="true">Draw one digit here<span>0 — 9</span></span></div><p class="drawing-help" id="drawing-help">One digit, centered in the box. Mouse, touch, or stylus.</p><div class="drawing-controls"><button class="button button-primary" id="predict" type="button">Predict <span aria-hidden="true">→</span></button><button class="button button-secondary" id="clear" type="button">Clear canvas</button></div><div class="examples"><span>Or try an MNIST example</span><div class="example-buttons" aria-label="Load a sample handwritten digit"><button type="button" data-digit="0" aria-label="Load example zero">0</button><button type="button" data-digit="1" aria-label="Load example one">1</button><button type="button" data-digit="2" aria-label="Load example two">2</button><button type="button" data-digit="3" aria-label="Load example three">3</button><button type="button" data-digit="4" aria-label="Load example four">4</button><button type="button" data-digit="5" aria-label="Load example five">5</button><button type="button" data-digit="6" aria-label="Load example six">6</button><button type="button" data-digit="7" aria-label="Load example seven">7</button><button type="button" data-digit="8" aria-label="Load example eight">8</button><button type="button" data-digit="9" aria-label="Load example nine">9</button></div></div></div>
       <div class="result-panel"><div class="panel-heading"><span>02 / Model output</span><span id="service-status">Hosted inference</span></div><div class="result-content" id="result" role="status" aria-live="polite" aria-atomic="true"><span class="result-symbol" aria-hidden="true">?</span><h2>What will you draw?</h2><p>Sketch a digit and hit Predict. The model will take it from there.</p></div><div class="score-list" id="scores" hidden aria-label="Top digit scores"></div><div class="result-footnote"><span class="status-dot" aria-hidden="true"></span><span id="inference-note">Drawings are processed for prediction and are not stored by this application.</span></div></div>
     </section>
-    <section class="lab-details" aria-labelledby="details-title"><div><p class="eyebrow">Under the hood</p><h2 id="details-title">A small model.<br><span class="muted">A real ML pipeline.</span></h2><p>The drawing travels to a hosted Python API. It is cropped, centered, and resized to 28 × 28 pixels before a convolutional neural network makes its prediction.</p></div><div class="detail-list"><div><span>Model</span><strong>Convolutional neural network</strong><p>Ten digit classes and one learned rejection class.</p></div><div><span>Training</span><strong>MNIST + rejection examples</strong><p>Handwritten digits, EMNIST letters, and generated multi-digit drawings, shapes, and scribbles.</p></div><div><span>Evaluation</span><strong id="metric-summary">Held-out test results</strong><p id="metric-detail">Validation selects the model and thresholds. Separate test sets measure digit accuracy and rejection performance.</p></div><div><span>Limitations</span><strong>Rejection is a judgment call</strong><p>The model can still mistake a doodle for a digit or reject unusual handwriting. Confidence is a model score, not a guarantee.</p></div></div></section>
+    <section class="lab-details" aria-labelledby="details-title"><div><p class="eyebrow">Under the hood</p><h2 id="details-title">Pixels to prediction.<br><span class="muted">A real ML pipeline.</span></h2><p>The drawing travels to a hosted Python API. It is cropped, centered, and resized to 28 × 28 pixels before a convolutional neural network makes its prediction.</p></div><div class="detail-list"><div><span>Model</span><strong>Convolutional neural network</strong><p>Ten digit classes and one learned rejection class.</p></div><div><span>Training</span><strong>MNIST + rejection examples</strong><p>Handwritten digits, EMNIST letters, and generated multi-digit drawings, shapes, and scribbles.</p></div><div><span>Evaluation</span><strong id="metric-summary">Held-out test results</strong><p id="metric-detail">Validation selects the model and thresholds. Separate test sets measure digit accuracy and rejection performance.</p></div><div><span>Limitations</span><strong>Rejection is a judgment call</strong><p>The model can still mistake a doodle for a digit or reject unusual handwriting. Confidence is a model score, not a guarantee.</p></div></div>
+      <div class="cnn-architecture" id="cnn-architecture">
+        <header class="cnn-heading">
+          <div><p class="eyebrow">CNN architecture</p><h3>Inside the neural network.</h3></div>
+          <span class="cnn-parameter-count">105,931 trainable parameters</span>
+        </header>
+        <figure class="cnn-diagram" aria-labelledby="cnn-diagram-caption">
+          <ol class="cnn-flow" aria-label="Convolutional neural network, from input to output">
+            <li class="cnn-node">
+              <span class="cnn-step">00 / Input</span>
+              <div class="cnn-visual" aria-hidden="true"><div class="cnn-input-grid">7</div></div>
+              <h4>Grayscale image</h4>
+              <code class="cnn-tensor">1 × 28 × 28</code>
+              <p>One channel.<br>Pixel values from 0 to 1.</p>
+            </li>
+            <li class="cnn-node">
+              <span class="cnn-step">01 / Features</span>
+              <div class="cnn-visual" aria-hidden="true"><div class="cnn-map-stack"><span></span><span></span><span></span></div></div>
+              <h4>Conv block 1</h4>
+              <code class="cnn-tensor">16 × 14 × 14</code>
+              <p>3 × 3 Conv · 16 filters · ReLU<br>2 × 2 max pooling</p>
+            </li>
+            <li class="cnn-node">
+              <span class="cnn-step">02 / Features</span>
+              <div class="cnn-visual" aria-hidden="true"><div class="cnn-map-stack cnn-map-stack--small"><span></span><span></span><span></span></div></div>
+              <h4>Conv block 2</h4>
+              <code class="cnn-tensor">32 × 7 × 7</code>
+              <p>3 × 3 Conv · 32 filters · ReLU<br>2 × 2 max pooling</p>
+            </li>
+            <li class="cnn-node">
+              <span class="cnn-step">03 / Classifier</span>
+              <div class="cnn-visual" aria-hidden="true">
+                <svg class="cnn-dense-visual" viewBox="0 0 120 90"><path d="M15 12 60 25 15 34 60 45 15 56 60 65 15 78M15 12 60 45 15 78M15 34 60 65M15 56 60 25M60 25 105 30 60 45 105 60 60 65M60 25 105 60M60 65 105 30"/><g><circle cx="15" cy="12" r="4"/><circle cx="15" cy="34" r="4"/><circle cx="15" cy="56" r="4"/><circle cx="15" cy="78" r="4"/><circle cx="60" cy="25" r="4"/><circle cx="60" cy="45" r="4"/><circle cx="60" cy="65" r="4"/><circle cx="105" cy="30" r="4"/><circle cx="105" cy="60" r="4"/></g></svg>
+              </div>
+              <h4>Dense layers</h4>
+              <code class="cnn-tensor">11 logits</code>
+              <p>Flatten 1,568 → Dense 64 → 11<br>Digits 0–9 + rejection</p>
+            </li>
+          </ol>
+          <figcaption id="cnn-diagram-caption">Each convolution block applies convolution → ReLU → max pooling. Output dimensions are shown after pooling. Feature maps and neuron counts are illustrated schematically; the dimensions and layer specifications below are exact.</figcaption>
+        </figure>
+        <div class="cnn-specifications">
+          <h4 id="cnn-spec-title">Layer-by-layer specification</h4>
+          <p id="cnn-shape-note">Image tensors use <strong>channels × height × width</strong>; the batch dimension is omitted below. For one drawing, the API passes a <code>float32</code> tensor of shape <code>[1, 1, 28, 28]</code>. Convolutions use dilation 1 and include a learned bias.</p>
+          <div class="cnn-table-scroll" tabindex="0" role="region" aria-labelledby="cnn-spec-title" aria-describedby="cnn-shape-note">
+            <table class="cnn-layer-table">
+              <caption class="sr-only">Layers in the deployed DigitNet model, followed by API score conversion.</caption>
+              <thead><tr><th scope="col">Layer</th><th scope="col">Input → output</th><th scope="col">Configuration &amp; activation</th><th scope="col">What it does</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Conv2d + ReLU<span>160 parameters</span></th><td><code>1 × 28 × 28<br>→ 16 × 28 × 28</code></td><td>16 filters · kernel 3 × 3<br>Stride 1 · padding 1<br><strong>ReLU: max(0, x)</strong></td><td>Learn local features with sliding filters. ReLU replaces negative activations with zero.</td></tr>
+                <tr><th scope="row">MaxPool2d</th><td><code>16 × 28 × 28<br>→ 16 × 14 × 14</code></td><td>Kernel 2 × 2 · stride 2<br>Padding 0 · no activation</td><td>Keep the largest value in each 2 × 2 region, halving height and width while preserving all 16 channels.</td></tr>
+                <tr><th scope="row">Conv2d + ReLU<span>4,640 parameters</span></th><td><code>16 × 14 × 14<br>→ 32 × 14 × 14</code></td><td>32 filters · kernel 3 × 3<br>Stride 1 · padding 1<br><strong>ReLU: max(0, x)</strong></td><td>Combine information across the 16 input channels into 32 learned feature maps.</td></tr>
+                <tr><th scope="row">MaxPool2d</th><td><code>32 × 14 × 14<br>→ 32 × 7 × 7</code></td><td>Kernel 2 × 2 · stride 2<br>Padding 0 · no activation</td><td>Reduce the spatial size again, leaving 32 feature maps of 7 × 7 values each.</td></tr>
+                <tr><th scope="row">Flatten</th><td><code>32 × 7 × 7<br>→ 1,568</code></td><td>Reshape only<br>No activation or learned parameters</td><td>Arrange all 32 × 7 × 7 features into one vector without changing their values.</td></tr>
+                <tr><th scope="row">Linear + ReLU<span>100,416 parameters</span></th><td><code>1,568 → 64</code></td><td>64 units · learned bias<br><strong>ReLU: max(0, x)</strong></td><td>Combine the extracted features into 64 hidden activations used for classification.</td></tr>
+                <tr><th scope="row">Dropout</th><td><code>64 → 64</code></td><td>Drop probability: 0.20<br>No activation</td><td>Randomly zero 20% of activations during training. Disabled during live inference, so all 64 activations pass through.</td></tr>
+                <tr><th scope="row">Linear output<span>715 parameters</span></th><td><code>64 → 11</code></td><td>11 units · learned bias<br><strong>No activation: raw logits</strong></td><td>Produce one unnormalized score for each digit from 0 to 9 and one for the learned rejection class.</td></tr>
+                <tr class="cnn-api-row"><th scope="row">Softmax<span>API postprocessing</span></th><td><code>11 logits → 11 scores</code></td><td>Across the class dimension<br><code>softmax(dim=1)</code></td><td>Convert the logits into scores that sum to 1. This runs in the Python API after the network; it is not a layer inside DigitNet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="cnn-table-hint">Scroll across the table to see all layer details.</p>
+        </div>
+        <aside class="cnn-decision" aria-labelledby="cnn-decision-title">
+          <h4 id="cnn-decision-title">From model scores to a response</h4>
+          <p>The API chooses the highest-scoring digit and accepts it only if its score is at least <strong>52.5%</strong> and the rejection-class score is at most <strong>5%</strong>. Otherwise, the drawing gets the cheeky response. Blank drawings are rejected before the CNN runs. These thresholds were selected on validation data; the scores are not calibrated probabilities of correctness.</p>
+          <a class="text-link" href="https://github.com/csw314/cameron-webster-profile/blob/main/api/mnist/network.py" target="_blank" rel="noopener noreferrer">Inspect the model definition ↗<span class="sr-only"> (opens in a new tab)</span></a>
+        </aside>
+      </div>
+    </section>
     <p class="dataset-credit">Curated example digits: MNIST, © Yann LeCun and Corinna Cortes, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>. These examples were selected after evaluation to demonstrate the interface. They were not used for training and are not a separate benchmark.</p>
     <noscript><p class="noscript-note">This interactive demo needs JavaScript. You can still explore the training code using the link above.</p></noscript>
   </main>
