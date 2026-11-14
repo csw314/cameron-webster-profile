@@ -1,0 +1,12 @@
+{
+  "name": "cameron-webster-profile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cameron Webster's personal profile and growing technical portfolio.",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
