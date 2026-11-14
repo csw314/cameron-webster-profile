@@ -1,24 +1,10 @@
 import { projects } from "../../data/projects.js";
-import { portrait } from "../../data/profile.js";
+import { initPortraitCarousel } from "./portrait-carousel.js";
 
 const year = document.querySelector("#year");
 if (year) year.textContent = new Date().getFullYear();
 
-const portraitImage = document.querySelector("#profile-portrait");
-const portraitNote = document.querySelector("#portrait-note");
-if (portraitImage) {
-  portraitImage.src = portrait.src;
-  portraitImage.alt = portrait.alt;
-  portraitImage.addEventListener("error", () => {
-    portraitImage.src = "assets/images/profile-placeholder.svg";
-    portraitImage.alt = "Cameron Webster monogram. Profile photograph unavailable.";
-    if (portraitNote) {
-      portraitNote.hidden = false;
-      portraitNote.textContent = "Portrait coming soon";
-    }
-  }, { once: true });
-}
-if (portraitNote) portraitNote.hidden = !portrait.isPlaceholder;
+initPortraitCarousel();
 
 // Keep the hand-authored HTML as a complete, useful no-JavaScript fallback.
 // Clone its decorative artwork only; all project content comes from the registry.

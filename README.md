@@ -4,7 +4,7 @@ A dark, responsive personal profile with a downloadable résumé and an interact
 
 ## Profile
 
-The main page introduces Cameron's experience, education, technical skills, and project roadmap. The résumé is available as a PDF; the supplied original Word document is retained under `assets/documents/`. A labeled monogram placeholder occupies the portrait frame until a real headshot is supplied.
+The main page introduces Cameron's experience, education, technical skills, and project roadmap. The résumé is available as a PDF; the supplied original Word document is retained under `assets/documents/`. Seven personal photos rotate in the profile card, with each photo and its caption advancing together every eight seconds. Visitors can pause the slideshow or navigate manually. Full photos remain visible across portrait and landscape orientations; reduced-motion preferences disable the transition animation.
 
 ## Handwritten Digit Lab
 
@@ -79,7 +79,7 @@ Render's free service can sleep while idle. The demo handles delayed or failed r
 ## Maintain the profile
 
 - Replace `assets/documents/Cameron_Webster_Resume.pdf` to update the download, keeping the filename stable.
-- Add a real headshot under `assets/images/`, set its path and alt text in `data/profile.js`, and set `isPlaceholder: false`. Update the static image and caption in `index.html` too so the no-JavaScript fallback stays accurate.
+- Manage photo order, captions, locations, alt text, and the eight-second interval in `data/profile.js`. Store optimized photos under `assets/images/profile/`. Keep the first static slide in `index.html` in sync so the no-JavaScript fallback stays accurate. The slideshow logic lives in `assets/js/portrait-carousel.js`.
 - Edit profile copy and social links in `index.html`.
 - Add future project links in `data/projects.js`, keeping Planned status until the corresponding experience works.
 
