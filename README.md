@@ -80,6 +80,7 @@ Render's free service can sleep while idle. The demo handles delayed or failed r
 
 - Replace `assets/documents/Cameron_Webster_Resume.pdf` to update the download, keeping the filename stable.
 - Manage photo order, captions, locations, alt text, and the eight-second interval in `data/profile.js`. Store optimized photos under `assets/images/profile/`. Keep the first static slide in `index.html` in sync so the no-JavaScript fallback stays accurate. The slideshow logic lives in `assets/js/portrait-carousel.js`, with styles in `assets/css/portrait-carousel.css`.
+- Keep the homepage's `?v=` release token consistent across stylesheet/script links in `index.html` and module imports in `assets/js/app.js` and `assets/js/portrait-carousel.js`. Bump it when publishing changes to those assets or their imported data so returning visitors load compatible versions together.
 - Edit profile copy and social links in `index.html`.
 - Add future project links in `data/projects.js`, keeping Planned status until the corresponding experience works.
 
