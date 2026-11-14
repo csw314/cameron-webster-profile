@@ -8,21 +8,21 @@
  */
 export const projects = [
   {
-    id: "live-dashboard",
-    title: "Live data dashboard",
-    status: "planned",
-    category: "Data engineering / Visualization",
-    description: "A planned dashboard connecting a live data feed to a pipeline and interactive visualizations.",
-    visual: "dashboard",
-    url: null,
+    "id": "mnist",
+    "title": "Handwritten digit recognition",
+    "status": "live",
+    "category": "Machine learning / Computer vision",
+    "description": "Draw a single digit and get a prediction from a trained CNN, with a cheeky response for drawings the model rejects.",
+    "visual": "mnist",
+    "url": "projects/mnist/"
   },
   {
-    id: "mnist",
-    title: "Handwritten digit recognition",
-    status: "planned",
-    category: "Machine learning / Computer vision",
-    description: "A planned demo where you draw a digit and a computer vision model trained on MNIST predicts the number.",
-    visual: "mnist",
-    url: null,
-  },
+    "id": "live-dashboard",
+    "title": "Live data dashboard",
+    "status": "planned",
+    "category": "Data engineering / Visualization",
+    "description": "A planned dashboard connecting a live data feed to a pipeline and interactive visualizations.",
+    "visual": "dashboard",
+    "url": null
+  }
 ];

@@ -10,7 +10,7 @@ The main page introduces Cameron's experience, education, technical skills, and 
 
 The interface lives at `projects/mnist/`. Visitors can draw with a mouse, finger, or stylus, clear the canvas, or load curated MNIST examples. Predict sends the drawing to the configured service. Accepted results show the predicted digit and top model scores. Rejected drawings receive a cheeky response. Service failures preserve the drawing and display a connection error rather than a rejection.
 
-The included model is already trained and evaluated. The page keeps prediction explicitly pending until `projects/mnist/config.js` contains the confirmed API service URL. The homepage project remains marked Planned until that service is verified live.
+The included model is trained and evaluated. Its public prediction service is configured at https://cameron-webster-mnist.onrender.com . The homepage links to the working MNIST demo; the live data dashboard remains planned.
 
 | Component | Location |
 | --- | --- |
@@ -72,7 +72,7 @@ Tests exercise the real checkpoint, all ten curated examples, blank and multi-di
 
 GitHub Pages can deploy the repository root from `main`; `.nojekyll` is included. For another static host, `npm run build` copies the profile and project pages to `dist/` without the API, training files, or tests.
 
-Deploy the API separately to Render using the commands in `api/README.md` or the validated root Blueprint. Verify health and actual inference before adding the exact service URL to `projects/mnist/config.js`. Then mark the MNIST entry live in `data/projects.js` and update its static fallback card and the roadmap introduction in `index.html`. The live data dashboard remains planned.
+Deploy the API separately to Render using the commands in `api/README.md` or the schema-validated root Blueprint. Verify health and actual inference before adding the exact service URL to `projects/mnist/config.js`. Then mark the MNIST entry live in `data/projects.js` and update its static fallback card and the roadmap introduction in `index.html`. The live data dashboard remains planned.
 
 Render's free service can sleep while idle. The demo handles delayed or failed requests explicitly; an always-on compute plan can be selected later if desired.
 

@@ -31,20 +31,20 @@ Other endpoints:
 
 ## Render deployment
 
-The root `render.yaml` defines a free Python web service rooted at `api/`, using one Uvicorn worker and one PyTorch thread. The tested local process used about 240 MB peak resident memory; actual platform usage may differ. Weights are part of the build, so restarts do not require training or a persistent disk.
+The deployed service uses the repository root with commands that explicitly target `api/`, one Uvicorn worker, and one PyTorch thread. The optional root `render.yaml` defines an equivalent service using `api/` as its root directory. The tested local process used about 240 MB peak resident memory; actual platform usage may differ. Weights are part of the build, so restarts do not require training or a persistent disk.
 
 | Setting | Value |
 | --- | --- |
 | Repository | `https://github.com/csw314/cameron-webster-profile` |
 | Branch | `main` |
-| Root directory | `api` |
+| Root directory | Repository root |
 | Runtime | Python |
-| Build | `pip install -r requirements.txt` |
-| Start | `uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1` |
-| Health path | `/health` |
+| Build | `pip install -r api/requirements.txt` |
+| Start | `uvicorn main:app --app-dir api --host 0.0.0.0 --port $PORT --workers 1` |
+| Readiness verification | `GET /health` (direct service uses default TCP health checks; the Blueprint sets `/health`) |
 | Python version | `3.12.11` |
 | Allowed origin | `https://csw314.github.io` |
 
-After Render reports the deploy live, verify `/health` and an actual `/predict` request. Put the exact returned service URL into `projects/mnist/config.js`. A public Git URL deploy may require manual redeployment; automatic commits require a connected Git provider. Free services can sleep after inactivity. The frontend preserves the drawing and explains a delayed or failed request without mislabeling it as a rejected drawing.
+Public service URL: https://cameron-webster-mnist.onrender.com . After each deploy, verify `/health` and an actual `/predict` request. The confirmed service URL is configured in `projects/mnist/config.js`. A public Git URL deploy may require manual redeployment; automatic commits require a connected Git provider. Free services can sleep after inactivity. The frontend preserves the drawing and explains a delayed or failed request without mislabeling it as a rejected drawing.
 
 The service intentionally uses no database and stores no drawings. Request payloads are not logged by application code. Never put API keys in frontend JavaScript; this public inference demo does not need a secret key.
