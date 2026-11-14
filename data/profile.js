@@ -15,7 +15,7 @@ export const portraits = [
     width: 960,
     height: 720,
     alt: "A childhood photo of Cameron in front of the Arc de Triomphe in Paris.",
-    caption: "A childhood photo of my with the Arc de Triomphe.",
+    caption: "A childhood photo of me with the Arc de Triomphe.",
     location: "Paris, France",
   },
   {
@@ -23,7 +23,7 @@ export const portraits = [
     width: 1200,
     height: 900,
     alt: "Cameron and his wife smiling in Times Square at night.",
-    caption: "With my wife in Times Square.",
+    caption: "Visiting Times Square with my wife.",
     location: "New York City, New York",
   },
   {
@@ -32,7 +32,7 @@ export const portraits = [
     height: 800,
     alt: "A candid moment as Cameron and his wife cut their wedding cake.",
     caption: "A candid moment caught on camera from my wedding.",
-    location: "Washington, D.C.",
+    location: "Washington, DC",
   },
   {
     src: "assets/images/profile/cusco-hometown.jpg",
@@ -55,7 +55,7 @@ export const portraits = [
     width: 900,
     height: 1200,
     alt: "Cameron holding a baby llama in Cusco, Peru.",
-    caption: "Me holding a baby llama in Cusco.",
+    caption: "Holding a baby llama in Cusco.",
     location: "Cusco, Peru",
   },
 ];
