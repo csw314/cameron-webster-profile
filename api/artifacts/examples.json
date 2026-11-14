@@ -1,0 +1,52 @@
+[
+  {
+    "label": 0,
+    "test_index": 3,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 1,
+    "test_index": 2,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 2,
+    "test_index": 1,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 3,
+    "test_index": 18,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 4,
+    "test_index": 4,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 5,
+    "test_index": 8,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 6,
+    "test_index": 11,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 7,
+    "test_index": 0,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 8,
+    "test_index": 84,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  },
+  {
+    "label": 9,
+    "test_index": 9,
+    "selection": "first correctly accepted resized example; not an evaluation sample"
+  }
+]
