@@ -18,11 +18,11 @@ export const projects = [
   },
   {
     "id": "live-dashboard",
-    "title": "Live data dashboard",
-    "status": "planned",
-    "category": "Data engineering / Visualization",
-    "description": "A planned dashboard connecting a live data feed to a pipeline and interactive visualizations.",
+    "title": "Capital Bikeshare dispatch",
+    "status": "live",
+    "category": "Data engineering / Operations research",
+    "description": "Use live station inventory to plan a bike transfer in the DC region, then replay a recorded commute to see which stations ran short.",
     "visual": "dashboard",
-    "url": null
+    "url": "projects/bikeshare/"
   }
 ];

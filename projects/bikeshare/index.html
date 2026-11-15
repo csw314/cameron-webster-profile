@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0f14">
+  <title>Bikeshare dispatch | Cameron Webster</title>
+  <meta name="description" content="Plan a bike transfer across metropolitan Washington with live station inventory, historical trip demand, and recorded commute replays.">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20261114-profile-4">
+  <link rel="stylesheet" href="dispatch.css?v=1">
+  <script type="module" src="app.js?v=1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dispatch board</a>
+  <header class="site-header"><div class="container header-inner">
+    <a class="brand" href="../../" aria-label="Cameron Webster, home"><span class="brand-mark" aria-hidden="true">c<span class="brand-slash">/</span>w</span><span class="brand-name">Cameron Webster</span></a>
+    <a class="back" href="../../#projects">← Portfolio</a>
+    <a class="header-contact" href="https://github.com/csw314/cameron-webster-profile/tree/main/projects/bikeshare">Source code <svg class="icon-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M3 3h10v10"/></svg></a>
+  </div></header>
+  <main class="container" id="main">
+    <section class="intro" aria-labelledby="title">
+      <div>
+        <p class="eyebrow"><span class="square" aria-hidden="true"></span>Capital Bikeshare / Washington metro</p>
+        <h1 id="title">Bikeshare dispatch<span>.</span></h1>
+        <p>One truck, 30 minutes. Decide where to move bikes before stations run out of bikes or places to dock.</p>
+      </div>
+      <div class="mode-switch" role="group" aria-label="Data mode">
+        <button id="live-mode" type="button" aria-pressed="true"><span class="live-icon" aria-hidden="true"></span>Live network</button>
+        <button id="replay-mode" type="button" aria-pressed="false"><span aria-hidden="true">↺</span> Commute replay</button>
+      </div>
+    </section>
+    <noscript>This dashboard needs JavaScript to read station reports and calculate transfers. <a href="https://capitalbikeshare.com/system-data">Explore the operator data</a>.</noscript>
+    <div class="source-strip">
+      <div><span class="source-lamp" id="lamp" aria-hidden="true"></span><strong id="source-state" role="status">Connecting to operator</strong><span id="snapshot-time"></span></div>
+      <button class="quiet" id="refresh" type="button">Refresh feed <span aria-hidden="true">↻</span></button>
+    </div>
+    <p id="notice" class="notice" role="status" hidden></p>
+    <section id="replay-tools" class="replay-tools" aria-label="Commute replay controls" hidden>
+      <label>Recorded session<select id="session"></select></label>
+      <div class="scrubber">
+        <label for="decision-time">Decision time <output id="decision-label" for="decision-time"></output></label>
+        <input type="range" id="decision-time" min="0" max="0" value="0" step="1" disabled>
+      </div>
+      <button type="button" class="outline" id="outcome-button" aria-controls="outcome" aria-expanded="false" disabled>Show 30-minute outcome ↓</button>
+    </section>
+    <section class="metrics" aria-label="Inventory at the selected time">
+      <div><h2>Stations reporting</h2><strong id="k-stations">—</strong><span>Open &amp; recently observed</span></div>
+      <div><h2>Bikes available</h2><strong id="k-bikes">—</strong><span>Across reporting stations</span></div>
+      <div><h2><i class="swatch empty"></i>Empty stations</h2><strong id="k-empty">—</strong><span>Zero bikes to rent</span></div>
+      <div><h2><i class="swatch full"></i>Full stations</h2><strong id="k-full">—</strong><span>Zero docks for returns</span></div>
+    </section>
+    <section class="board" aria-label="Dispatch workspace">
+      <div class="panel map-panel">
+        <div class="panel-top"><h2>Station map</h2><div class="map-views"><button id="fit-pair" type="button" disabled>Fit move</button><button id="fit-network" type="button" disabled>Fit network</button></div></div>
+        <div class="map-stage" id="map-stage">
+          <canvas id="map" aria-label="Washington metro station inventory and selected transfer. Use the station search below to inspect any station."></canvas>
+          <div class="map-zoom" role="group" aria-label="Map zoom"><button type="button" id="zoom-in" aria-label="Zoom in">+</button><button type="button" id="zoom-out" aria-label="Zoom out">−</button></div>
+          <div class="map-attribution">Geography · US Census Bureau</div>
+        </div>
+        <div class="map-legend"><span><i class="swatch balanced"></i>Available</span><span><i class="swatch empty"></i>No bikes</span><span><i class="swatch full"></i>No docks</span><span><i class="route-mark"></i>Selected move</span></div>
+        <div class="lookup"><label for="station-search">Inspect a station</label><input id="station-search" list="station-names" type="search" placeholder="Search station name…" autocomplete="off" disabled><datalist id="station-names"></datalist></div>
+        <p class="station-readout" id="station-readout" aria-live="polite">Select a station on the map or search by name.</p>
+      </div>
+      <div class="panel queue-panel">
+        <div class="panel-top"><h2>Dispatch queue</h2><label class="capacity">Truck capacity<select id="capacity"><option value="2">2 bikes</option><option value="4">4 bikes</option><option value="8" selected>8 bikes</option><option value="12">12 bikes</option></select></label></div>
+        <div id="queue" class="queue"><p class="placeholder">Waiting for station inventory…</p></div>
+        <p class="queue-note">Each move is an alternative for the same truck. Time estimates start at pickup.</p>
+      </div>
+    </section>
+    <section class="brief panel" id="move-brief" aria-labelledby="brief-title">
+      <div class="panel-top"><h2 id="brief-title">Selected transfer</h2><span class="mono" id="move-estimate"></span></div>
+      <div id="brief"><p class="placeholder">Choose a transfer to see the inventory forecast.</p></div>
+    </section>
+    <section id="outcome" class="outcome panel" aria-labelledby="outcome-title" tabindex="-1" hidden>
+      <div class="panel-top"><h2 id="outcome-title">30-minute outcome</h2><span class="mono" id="outcome-period"></span></div>
+      <div class="outcome-body"><div><h3>Did the alerts predict a shortage?</h3><p id="coverage"></p>
+        <div class="table-wrap"><table><thead><tr><th scope="col">Alert rule</th><th scope="col">Hits / alerts</th><th scope="col">Precision</th><th scope="col">Recall</th><th scope="col">Missed</th><th scope="col">Lead¹</th></tr></thead><tbody id="evaluation"></tbody></table></div>
+        <p class="fine">¹ Median time from a correct alert to the first observed shortage. A dash means the metric has no denominator.</p>
+        <details id="observed-events"><summary>Stations that became empty or full</summary><ul id="events"></ul></details>
+      </div><div class="impact"><h3>Simulated transfer impact</h3><div id="impact"></div><div id="trace"></div></div></div>
+    </section>
+    <details class="methods"><summary>Data, forecasting &amp; dispatch assumptions</summary>
+      <div class="methods-grid">
+        <section><h3>Inventory &amp; demand</h3><p>The browser reads Capital Bikeshare’s GBFS station information and status feeds at the advertised refresh interval while this page is visible. Live dispatch excludes closed, virtual, unobserved, and stale stations. The clock shows the operator’s update in Washington time.</p>
+        <p id="demand-note">Expected net departures come from historical station pickups and returns in local half-hour bins, separated into weekdays and weekends. Stations without a trip-history match still count toward inventory.</p></section>
+        <section><h3>One feasible move</h3><p>When either end approaches three bikes or docks, the planner aims to restore a 30% buffer, capped at 12. It protects up to three bikes at pickup and three docks at drop-off and respects truck capacity. Moves rank by buffer restored per crew minute, with priority for an already empty or full station.</p><p>Travel uses 1.3 times straight-line distance at 18 km/h, plus two minutes and 30 seconds per bike at each stop. Weather, traffic, vehicle type, and travel to pickup are outside this estimate.</p></section>
+        <section><h3>Commute replay</h3><p>Choose a recorded decision time to run the same planner using only information available then. Reveal the next 30 minutes to compare its one-bike-or-dock forecast alert against a simple three-bike-or-dock inventory alert. Only stations observed at every checkpoint are scored. Already empty or full sides are excluded from new-shortage scoring.</p></section>
+        <section><h3>Business impact</h3><p>The replay applies observed inventory changes to both ends of one hypothetical move. Pickup and delivery take effect at the first checkpoint after their estimated times, subject to available stock and space. Empty or full minutes are approximated between samples. Real-world rebalancing and unobserved demand can change the outcome.</p></section>
+      </div>
+    </details>
+    <footer class="data-notes"><p>Independent portfolio project by Cameron Webster. <a href="https://capitalbikeshare.com/system-data">Operator data</a> · <a href="https://capitalbikeshare.com/data-license-agreement">Data terms</a> · <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">Census TIGER/Line</a></p><p>Bike-share data by CityBikes contributors and available from <a href="https://data.citybik.es">https://data.citybik.es</a>. The September archive replay is available under <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>.</p></footer>
+  </main>
+</body>
+</html>

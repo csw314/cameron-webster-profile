@@ -1,16 +1,20 @@
 # Cameron Webster profile and ML portfolio
 
-A dark, responsive personal profile with a downloadable résumé and an interactive handwritten-digit project. The profile and drawing interface run on GitHub Pages. A separate FastAPI service serves the trained PyTorch model.
+A dark, responsive personal profile with a downloadable résumé and two interactive projects covering computer vision and live bike dispatch. The profile and drawing interface run on GitHub Pages. A separate FastAPI service serves the trained PyTorch model.
 
 ## Profile
 
-The main page introduces Cameron's experience, education, technical skills, and project roadmap. The résumé is available as a PDF; the supplied original Word document is retained under `assets/documents/`. Seven personal photos rotate in the profile card, with each photo and its caption advancing together every eight seconds. Visitors can pause the slideshow or navigate manually. Full photos remain visible across portrait and landscape orientations; reduced-motion preferences disable the transition animation.
+The main page introduces Cameron's experience, education, technical skills, and project roadmap. The résumé is available as a PDF; the supplied original Word document is retained under `assets/documents/`. Nine personal photos rotate in the profile card, with each photo and its caption advancing together every eight seconds. Visitors can pause the slideshow or navigate manually. Full photos remain visible across portrait and landscape orientations; reduced-motion preferences disable the transition animation.
+
+## Capital Bikeshare dispatch
+
+The [live dashboard](https://csw314.github.io/cameron-webster-profile/projects/bikeshare/) combines operator inventory, historical trip demand, a ranked transfer queue, and observed commute replay. The [project documentation](projects/bikeshare/README.md) covers data provenance, the recorder, the dispatch model, reproducible forecasts, and an optional Databricks warehouse notebook.
 
 ## Handwritten Digit Lab
 
 The interface lives at `projects/mnist/`. Visitors can draw with a mouse, finger, or stylus, clear the canvas, or load curated MNIST examples. Predict sends the drawing to the configured service. Accepted results show the predicted digit and top model scores. Rejected drawings receive a cheeky response. Service failures preserve the drawing and display a connection error rather than a rejection.
 
-The included model is trained and evaluated. Its public prediction service is configured at https://cameron-webster-mnist.onrender.com . The homepage links to the working MNIST demo; the live data dashboard remains planned.
+The included model is trained and evaluated. Its public prediction service is configured at https://cameron-webster-mnist.onrender.com . The homepage links to both live projects.
 
 | Component | Location |
 | --- | --- |
@@ -73,7 +77,7 @@ Tests exercise the real checkpoint, all ten curated examples, blank and multi-di
 
 GitHub Pages can deploy the repository root from `main`; `.nojekyll` is included. For another static host, `npm run build` copies the profile and project pages to `dist/` without the API, training files, or tests.
 
-Deploy the API separately to Render using the commands in `api/README.md` or the schema-validated root Blueprint. Verify health and actual inference before adding the exact service URL to `projects/mnist/config.js`. Then mark the MNIST entry live in `data/projects.js` and update its static fallback card and the roadmap introduction in `index.html`. The live data dashboard remains planned.
+Deploy the API separately to Render using the commands in `api/README.md` or the schema-validated root Blueprint. Verify health and actual inference before adding the exact service URL to `projects/mnist/config.js`. Then mark the MNIST entry live in `data/projects.js` and update its static fallback card and the roadmap introduction in `index.html`.
 
 Render's free service can sleep while idle. The demo handles delayed or failed requests explicitly; an always-on compute plan can be selected later if desired.
 
