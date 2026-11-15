@@ -58,4 +58,20 @@ export const portraits = [
     caption: "Holding a baby llama in Cusco.",
     location: "Cusco, Peru",
   },
+  {
+    src: "assets/images/profile/maui-family.jpg",
+    width: 1200,
+    height: 800,
+    alt: "Cameron and his family standing together on a Maui beach at sunset.",
+    caption: "Family photo taken on a trip to Hawaii.",
+    location: "Maui, Hawaii",
+  },
+  {
+    src: "assets/images/profile/dc-karaoke.jpg",
+    width: 676,
+    height: 1200,
+    alt: "Cameron and his wife sharing a microphone under green karaoke lights.",
+    caption: "Singing Karaoke with my wife",
+    location: "Washington, DC",
+  },
 ];
