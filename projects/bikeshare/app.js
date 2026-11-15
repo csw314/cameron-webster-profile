@@ -1,4 +1,4 @@
-import {forecast, postTransferBikes, planTransfers, frameStations, decisionFrames, evaluate, HORIZON} from "./dispatch.js?v=1";
+import {forecast, postTransferBikes, planTransfers, frameStations, decisionFrames, evaluate, HORIZON} from "./dispatch.js?v=2";
 import {fetchLive, json, latestSessions, replayURL} from "./feed.js?v=1";
 import {StationMap} from "./map.js?v=1";
 
@@ -79,7 +79,7 @@ function drawQueue() {
     const quantity = node("span",move.bikes + (move.bikes === 1 ? " bike" : " bikes"),"qty");
     quantity.append(node("small",move.minutes + " min"));
     button.append(node("span",String(i+1).padStart(2,"0"),"rank"),names,quantity);
-    button.addEventListener("click",()=>selectMove(i,true));
+    button.addEventListener("click",()=>{ selectMove(i,true); if(mode==="replay") syncAddress(); });
     list.append(button);
   });
   if (!moves.length) list.append(node("p","No feasible moves meet the reserve, capacity, and 30-minute constraints in this snapshot.","placeholder"));
@@ -208,8 +208,12 @@ function syncAddress() {
   if (mode === "replay" && snapshot && record) {
     url.searchParams.set("replay",record.date);
     url.searchParams.set("at",timeKey.format(snapshot.ts*1000));
+    if (el("capacity").value !== "8") url.searchParams.set("truck",el("capacity").value);
+    else url.searchParams.delete("truck");
+    if (choice > 0) url.searchParams.set("move",String(choice+1));
+    else url.searchParams.delete("move");
   } else {
-    url.searchParams.delete("replay"); url.searchParams.delete("at");
+    for (const k of ["replay","at","truck","move"]) url.searchParams.delete(k);
   }
   if (!showOutcome && url.hash === "#outcome") url.hash = "";
   if (showOutcome) url.hash = "outcome";
@@ -285,11 +289,17 @@ async function setMode(next, requested = {}) {
   sessionOptions();
   const today = dcDate.format(Date.now());
   const exact = sessions.find(s=>s.date===requested.date);
-  const preferred = exact || sessions.find(s=>s.date<today) || sessions[0];
+  const preferred = exact || recent.find(s=>s.date<today) || recent[0] || archive;
   if (requested.date && !exact) notice("That recording is outside the retained sessions. The displayed date identifies the available replay.");
   el("session").value = preferred.file;
   el("session").disabled = false;
+  if (["2","4","8","12"].includes(requested.truck)) el("capacity").value = requested.truck;
   await loadSession(preferred.file, true, requested.at || "17:10");
+  const rank = Number(requested.move);
+  if (mode === "replay" && record?.date === requested.date && Number.isInteger(rank) && rank>1 && rank<=moves.length) {
+    selectMove(rank-1,true);
+    syncAddress();
+  }
   if (requested.outcome && mode === "replay" && snapshot && record?.date === requested.date) {setOutcome(true);syncAddress();}
 }
 
@@ -369,7 +379,7 @@ el("refresh").onclick=refresh;
 el("session").onchange=()=>{notice("");loadSession(el("session").value);};
 el("decision-time").oninput=atDecision;
 el("outcome-button").onclick=()=>{setOutcome(!showOutcome);syncAddress();};
-el("capacity").onchange=()=>{if(snapshot)renderSnapshot(snapshot);};
+el("capacity").onchange=()=>{if(snapshot){renderSnapshot(snapshot);if(mode==="replay")syncAddress();}};
 el("fit-pair").onclick=()=>map.fitMove();
 el("fit-network").onclick=()=>map.fitNetwork();
 el("zoom-in").onclick=()=>map.zoom(.65);
@@ -391,7 +401,8 @@ json("data/basemap.json").then(data=>map.geography(data)).catch(()=>{
 const incoming = new URL(location.href);
 const date = incoming.searchParams.get("replay");
 if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
-  setMode("replay",{date, at:incoming.searchParams.get("at"), outcome:incoming.hash==="#outcome"});
+  setMode("replay",{date, at:incoming.searchParams.get("at"), truck:incoming.searchParams.get("truck"),
+    move:incoming.searchParams.get("move"), outcome:incoming.hash==="#outcome"});
 } else setMode("live");
 
 json("data/streets.json").then(data=>map.streets(data)).catch(()=>{ /* The regional map still works. */ });

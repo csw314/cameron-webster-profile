@@ -32,10 +32,14 @@ export function forecast(stations, ts, demand) {
     const slots = station.bikes + station.docks;
     const futureBikes = clamp(station.bikes - net, 0, slots);
     const futureDocks = slots - futureBikes;
-    const lowBikes = Math.min(station.bikes, futureBikes);
-    const lowDocks = Math.min(station.docks, futureDocks);
+    let estimate = station.bikes, lowBikes = station.bikes, lowDocks = station.docks;
+    for (const flow of flows) {
+      estimate -= flow.minutes * flow.rate;
+      lowBikes = Math.min(lowBikes, clamp(estimate, 0, slots));
+      lowDocks = Math.min(lowDocks, clamp(slots - estimate, 0, slots));
+    }
     // Leave a reserve on both sides of a move, including at small stations.
-    const reserve = Math.min(BUFFER, Math.floor(slots / 2));
+    const reserve = Math.min(BUFFER, Math.max(1, Math.floor(slots / 2)));
     const target = Math.min(Math.ceil(slots * 0.3), 12);
     return {...station, modeled: Boolean(history), slots, flows, net, futureBikes, futureDocks,
       give: Math.max(0, Math.floor(lowBikes - reserve)),

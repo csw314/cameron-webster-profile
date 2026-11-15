@@ -146,10 +146,10 @@ spark.sql(f"""CREATE OR REPLACE VIEW {namespace}.bikeshare_alert_scores AS
   ), forecasts AS (
     SELECT *, rates[slot1]*(1-fraction) + rates[slot2]*fraction AS net FROM bins
   ), sides AS (
-    SELECT source, checkpoint, bikes AS inventory, bikes-net AS projected,
+    SELECT source, checkpoint, bikes AS inventory, LEAST(bikes+docks, GREATEST(0, bikes-net)) AS projected,
        next_min_bikes=0 AS actual FROM forecasts
     UNION ALL
-    SELECT source, checkpoint, docks AS inventory, docks+net AS projected,
+    SELECT source, checkpoint, docks AS inventory, LEAST(bikes+docks, GREATEST(0, docks+net)) AS projected,
        next_min_docks=0 AS actual FROM forecasts
   )
   SELECT source, timestamp_seconds(checkpoint) AS decision_time, COUNT(*) AS eligible_sides,
