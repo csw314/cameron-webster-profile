@@ -137,6 +137,19 @@ def publish_files(folder, record):
         (folder / (old["date"] + ".json")).unlink(missing_ok=True)
 
 
+def scheduled_window(now):
+    """Keep the commute window when possible and give a delayed runner 40 minutes."""
+    start = now.replace(hour=16, minute=29, second=0, microsecond=0)
+    end = now.replace(hour=18, minute=0, second=5, microsecond=0)
+    # Wait only for the ordinary early launch. A run delayed across midnight
+    # must not sleep for most of the day and exhaust its GitHub job timeout.
+    if start - timedelta(minutes=20) <= now < start:
+        return start, end
+    if start <= now and end - now >= timedelta(minutes=40):
+        return now, end
+    return now, now + timedelta(minutes=40)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=Path(".cache/bikeshare/replays"))
@@ -145,14 +158,14 @@ if __name__ == "__main__":
     parser.add_argument("--minutes", type=int, help="Capture a session starting now; default is 16:30–18:00 Eastern")
     args = parser.parse_args()
     now = datetime.now(EASTERN)
-    start = now.replace(hour=16, minute=29, second=0, microsecond=0)
-    end = now.replace(hour=18, minute=0, second=5, microsecond=0)
-    if args.minutes:
-        end = now + timedelta(minutes=args.minutes)
-    elif not args.check and now < start:
-        time.sleep((start - now).total_seconds())
-    if not args.check and time.time() > end.timestamp() - 1800:
-        raise SystemExit("Too late to record a full decision window.")
+    start, end = scheduled_window(now)
+    if args.minutes is not None:
+        if args.minutes < 35:
+            parser.error("--minutes must allow at least 35 minutes for seven five-minute checkpoints")
+        start, end = now, now + timedelta(minutes=args.minutes)
+    if not args.check:
+        print(f"Recording {start.isoformat()} through {end.isoformat()}", flush=True)
+        time.sleep(max(0, start.timestamp() - time.time()))
     result = capture(time.time() + 60 if args.check else end.timestamp(), args.raw_dir, args.check)
     if result:
         publish_files(args.out, result)

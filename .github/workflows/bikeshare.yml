@@ -22,10 +22,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - run: python3 -m unittest discover -s tests -p test_bikeshare_recorder.py -v
       - run: python3 scripts/bikeshare/collect.py --check
 
   record:
-    if: github.event_name != 'push'
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[record session]')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     permissions:
@@ -43,7 +44,7 @@ jobs:
             git -C "$RUNNER_TEMP/replays" rm -rf --quiet .
           fi
       - name: Collect the evening session
-        if: github.event_name == 'schedule'
+        if: github.event_name != 'workflow_dispatch'
         run: python3 scripts/bikeshare/collect.py --out "$RUNNER_TEMP/replays"
       - name: Collect a session now
         if: github.event_name == 'workflow_dispatch'

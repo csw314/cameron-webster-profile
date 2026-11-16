@@ -9,6 +9,17 @@ from scripts.bikeshare import collect
 
 
 class RecorderTests(unittest.TestCase):
+    def test_delayed_schedule(self):
+        from datetime import datetime, timedelta
+        for stamp in ["2026-11-15T17:29:59", "2026-11-15T20:04:36", "2026-11-16T01:05:00"]:
+            now = datetime.fromisoformat(stamp).replace(tzinfo=collect.EASTERN)
+            start, end = collect.scheduled_window(now)
+            self.assertEqual(start, now)
+            self.assertEqual(end - start, timedelta(minutes=40))
+        now = now.replace(hour=16, minute=17)
+        start, end = collect.scheduled_window(now)
+        self.assertEqual((start.hour, start.minute, end.hour), (16, 29, 18))
+
     def test_time_grid_and_feed_deduplication(self):
         clock = [1_800_000_001]
         station = {"station_id": "A", "short_name": "42", "name": "First", "lat": 38.9, "lon": -77.0}
